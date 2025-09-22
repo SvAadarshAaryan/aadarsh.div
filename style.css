@@ -281,11 +281,6 @@ html, body {
   width: 100%;
   min-width: 100%;   /* don’t collapse */
 }
-.container {
-  width: 100%;
-  max-width: 1200px;   /* site won’t stretch too wide */
-  margin: 0 auto;      /* center it */
-}
 .video-wrapper {
   max-width: 960px;   /* common desktop limit */
   margin: 0 auto;     /* center horizontally */
