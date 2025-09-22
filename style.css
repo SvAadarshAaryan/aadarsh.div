@@ -1,0 +1,257 @@
+/* Reset default spacing and box sizing */
+*,
+body, ul, img {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body background and text color */
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+/* Header image */
+header .poster {
+    display: block;      /* removes inline gaps */
+    width: 100%;         /* full width */
+    height: 75px;        /* preferred height */
+    background-color: black;
+}
+
+/* Secondary topics bar */
+.topics-bar {
+    background-color: #f1f1f1; /* light grey */
+    height: 35px;              /* thin horizontal bar */
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    position: sticky;          /* sticky on scroll */
+    top: 0;
+    z-index: 1000;
+}
+
+.topics-bar ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.topics-bar li {
+    margin-right: 50px;
+}
+
+.topics-bar a {
+    text-decoration: none;
+    color: #000;
+    font-weight: 700;
+    font-size: 14px;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+.topics-bar a:hover {
+    /*color: #1a73e8;*/
+    border-bottom: 2px solid #1a73e8;
+    background-color:black;
+    color:aqua;
+}
+
+/* Header paragraph styling */
+.headp {
+    font-family: "Georgia", serif, "Times New Roman";
+    font-style: italic;
+    color: white;
+    background-color: #353138;
+    margin: 0;
+    padding: 15px;
+    display: inline-block;       /* smooth animation */
+    animation: fall 0.8s ease-out forwards;
+}
+
+/* Highlighted bold text */
+.b1 {
+    color: aqua;
+    display: inline-block;       /* smooth animation */
+    animation: fall 2.1s ease-out forwards;
+}
+
+/* Animation for falling effect */
+@keyframes fall {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);   /* start higher */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);       /* settle in place */
+    }
+}
+
+/* Section title */
+.code0 {
+    color: white;
+    margin: 19px;
+    text-align: center;
+}
+
+/* Code block styling */
+.code {
+    font-family: monospace;
+    background: #1e1e1e;
+    color: #fff;
+    padding: 15px;
+    border-radius: 6px;
+}
+
+.doctype { color: #808080; }
+.tag     { color: #569cd6; }
+.attr    { color: #9cdcfe; }
+.value   { color: #ce9178; }
+.text    { color: #dcdcaa; }
+
+/* Horizontal scrolling explanation block */
+.hfexp {
+    width: 350px;
+    overflow: scroll;
+    word-wrap: break-word;
+    text-overflow: clip;
+}
+
+/* Paragraphs general color */
+p {
+    color: white;
+}
+
+/* Headings */
+h3 {
+    color: white;
+    margin: 19px;
+}
+
+/* Scrolling message (replaces marquee) */
+.scrolling-message {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.scrolling-message h3 {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scroll-left 10s linear infinite;
+}
+
+@keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+/* Footer styling */
+.site-footer {
+    background-color: #1e1e1e;
+    color: #f1f1f1;
+    padding: 20px 15px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    border-top: 2px solid #444;
+}
+
+.site-footer .footer-content {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.site-footer p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* Footer links */
+.site-footer .footer-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.site-footer .footer-nav a {
+    /* color: #61dafb;*/
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-block;
+    transition: color 0.3s, text-decoration 0.3s, transform 0.3s;
+}
+
+/* Hover effect with subtle lift */
+.site-footer .footer-nav a:hover {
+    color: #fff;
+    text-decoration: underline;
+    transform: translateY(-3px);
+}
+
+/* Optional underline animation */
+.site-footer .footer-nav a::after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 0;
+    background: #61dafb;
+    transition: width 0.3s;
+}
+
+.site-footer .footer-nav a:hover::after {
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    /* Topics bar: allow horizontal scroll on small screens */
+    .topics-bar ul {
+        flex-wrap: nowrap;        /* prevent wrapping */
+        overflow-x: auto;         /* scroll if too wide */
+    }
+
+    .topics-bar li {
+        margin-right: 15px;       /* smaller gap for mobile */
+    }
+
+    .topics-bar a {
+        font-size: 12px;          /* slightly smaller text */
+    }
+
+    /* Header paragraph: adjust padding for small screens */
+    .headp {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    /* Code block explanation: make scrollable and fit screen */
+    .hfexp {
+        width: 100%;              /* full width on mobile */
+        max-width: 100%;
+        overflow-x: auto;         /* horizontal scroll if needed */
+    }
+
+    /* Code block font: reduce slightly for small screens */
+    .code {
+        font-size: 13px;
+        padding: 10px;
+    }
+}
+
+/* Smooth horizontal scrolling for overflow */
+.topics-bar ul,
+.hfexp {
+    -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
+}
+#instagram{
+    color:#fc0ae4;
+}
+#whatsapp{
+    color:#0afc0a;
+}
