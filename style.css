@@ -255,3 +255,22 @@ h3 {
 #whatsapp{
     color:#0afc0a;
 }
+.lastline {
+  font-size: 1rem; /* very small text */
+  font-weight: bold;
+  animation: siren 3s infinite;
+  color: black; /* starting color */
+  text-shadow: 0 0 2px black, 0 0 4px black, 0 0 6px black; /* subtle glow for small text */
+  text-align:center;
+}
+
+@keyframes siren {
+  0%, 50%, 100% {
+    color: black;
+    text-shadow: 0 0 2px black, 0 0 4px black, 0 0 6px black;
+  }
+  25%, 75% {
+    color: aqua;
+    text-shadow: 0 0 2px aqua, 0 0 4px aqua, 0 0 6px aqua;
+  }
+}
