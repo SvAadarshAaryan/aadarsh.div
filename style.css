@@ -115,7 +115,7 @@ header .poster {
 
 /* Horizontal scrolling explanation block */
 .hfexp {
-    width: 350px;
+    /*width: 350px;*/
     overflow: scroll;
     word-wrap: break-word;
     text-overflow: clip;
