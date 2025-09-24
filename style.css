@@ -367,4 +367,6 @@ h4{
     background: transparent;
     box-shadow: 0 0 20px 5px #00fffc;
 }
-
+.tooltip-text{
+    color:orange !important;
+}
