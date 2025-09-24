@@ -1,4 +1,4 @@
-// Correct answers
+/*//Correct answers
 const correctAnswers = {
   q1: "a",
   q2: "a",
@@ -81,4 +81,4 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('click', () => {
     tooltip.style.display = 'none';
   });
-});
+});*/
