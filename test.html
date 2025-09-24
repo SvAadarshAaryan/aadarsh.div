@@ -200,6 +200,27 @@ function animateScore(finalScore) {
     }
   }, 150); // Adjust speed here
 }
+  document.addEventListener('DOMContentLoaded', () => {
+  const tags = document.querySelectorAll('.tag');
+  const tooltip = document.getElementById('tooltip');
+
+  tags.forEach(tag => {
+    tag.addEventListener('click', (e) => {
+      e.stopPropagation();
+      tooltip.innerText = tag.dataset.meaning;
+      tooltip.style.display = 'block';
+
+      const rect = tag.getBoundingClientRect();
+      tooltip.style.top = window.scrollY + rect.bottom + 5 + 'px';
+      tooltip.style.left = window.scrollX + rect.left + 'px';
+    });
+  });
+
+  document.addEventListener('click', () => {
+    tooltip.style.display = 'none';
+  });
+});
+
 </script>
 </body>
           </html>
