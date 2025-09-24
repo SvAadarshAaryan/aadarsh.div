@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn web development at Aadarsh.dev — HTML, CSS, JavaScript, frameworks, design tips, and everything you need to master coding.">
+
+  <!-- Linking CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <title>Aadarsh.dev</title>
+</head>
+<body>
+
+  <header>
+    <!-- Top header image -->
+    <marquee>
+      <img class="poster" src="https://i.postimg.cc/4d5YQRQM/cooltext491943436893652.png" alt="Aadarsh.dev Logo">
+    </marquee>
+  </header>
+
+  <main>
+  <section>
+      <button class="btno" type="button" href="index.html">Go back</button>
+  </section>
+    <section>
+      <center><h2>Quick HTML Basics Quiz</h2></center>
+      <form id="quizForm">
+        <!-- Question 1 -->
+        <div class="question">
+          <p>1. Which tag is used to set a webpage’s title?</p>
+          <label><input type="radio" name="q1" value="a"> &lt;title&gt;</label><br>
+          <label><input type="radio" name="q1" value="b"> &lt;head&gt;</label><br>
+          <label><input type="radio" name="q1" value="c"> &lt;h1&gt;</label>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question">
+          <p>2. Which tag shows the biggest heading?</p>
+          <label><input type="radio" name="q2" value="a"> &lt;h1&gt;</label><br>
+          <label><input type="radio" name="q2" value="b"> &lt;h6&gt;</label><br>
+          <label><input type="radio" name="q2" value="c"> &lt;p&gt;</label>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question">
+          <p>3. Which tag creates a paragraph?</p>
+          <label><input type="radio" name="q3" value="a"> &lt;p&gt;</label><br>
+          <label><input type="radio" name="q3" value="b"> &lt;para&gt;</label><br>
+          <label><input type="radio" name="q3" value="c"> &lt;h3&gt;</label>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question">
+          <p>4. Which attribute sets the page icon (favicon)?</p>
+          <label><input type="radio" name="q4" value="a"> src</label><br>
+          <label><input type="radio" name="q4" value="b"> rel</label><br>
+          <label><input type="radio" name="q4" value="c"> href</label>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question">
+          <p>5. Which tag is used to add an image?</p>
+          <label><input type="radio" name="q5" value="a"> &lt;img&gt;</label><br>
+          <label><input type="radio" name="q5" value="b"> &lt;image&gt;</label><br>
+          <label><input type="radio" name="q5" value="c"> &lt;src&gt;</label>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="question">
+          <p>6. Which attribute specifies alternative text for an image?</p>
+          <label><input type="radio" name="q6" value="a"> alt</label><br>
+          <label><input type="radio" name="q6" value="b"> title</label><br>
+          <label><input type="radio" name="q6" value="c"> description</label>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="question">
+          <p>7. Which element is correct for linking a CSS file?</p>
+          <label><input type="radio" name="q7" value="a"> &lt;link rel="stylesheet" href="style.css"&gt;</label><br>
+          <label><input type="radio" name="q7" value="b"> &lt;style src="style.css"&gt;</label><br>
+          <label><input type="radio" name="q7" value="c"> &lt;css href="style.css"&gt;</label>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="question">
+          <p>8. Which tag is used for line breaks?</p>
+          <label><input type="radio" name="q8" value="a"> &lt;br&gt;</label><br>
+          <label><input type="radio" name="q8" value="b"> &lt;lb&gt;</label><br>
+          <label><input type="radio" name="q8" value="c"> &lt;break&gt;</label>
+        </div>
+
+        <!-- Question 9 -->
+        <div class="question">
+          <p>9. Which HTML element is used for metadata (like description, keywords)?</p>
+          <label><input type="radio" name="q9" value="a"> &lt;meta&gt;</label><br>
+          <label><input type="radio" name="q9" value="b"> &lt;info&gt;</label><br>
+          <label><input type="radio" name="q9" value="c"> &lt;script&gt;</label>
+        </div>
+
+        <!-- Question 10 -->
+        <div class="question">
+          <p>10. Which tag is used to make text bold?</p>
+          <label><input type="radio" name="q10" value="a"> &lt;strong&gt;</label><br>
+          <label><input type="radio" name="q10" value="b"> &lt;bold&gt;</label><br>
+          <label><input type="radio" name="q10" value="c"> &lt;bld&gt;</label>
+        </div>
+
+        <center><button class="btn" type="button" onclick="checkAnswers()">Submit</button></center>
+      </form>
+      <br><center><p id="score"></p></center><br><br>
+    </section>
+  </main>
+
+  
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p class="copyright">© 2025 Aadarsh Aaryan. All Rights Reserved.</p>
+      <p class="location">Based in Bihar, India</p>
+      <nav class="footer-nav">
+        <ul>
+          <li>
+            <a id="instagram" href="https://instagram.com/aadarshaaryan.official-" target="_blank" rel="noopener noreferrer">
+              Instagram
+            </a>
+          </li>
+          <li>
+            <a id="whatsapp" href="https://whatsapp.com/channel/0029Vb6k3vMIHphQM0TfI01P" target="_blank" rel="noopener noreferrer">
+              WhatsApp Channel
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+          </html>
