@@ -330,3 +330,41 @@ h4{
   width: 100%;
   height: 100%;
 }
+.btn {
+    padding: 8px 20px;
+    width: 200px;
+    height: 50px;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 0;
+    text-transform: uppercase;
+    margin: 25px;
+    overflow: hidden;
+    position: relative;
+    background: black;
+    border: 2px solid #00fffc;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #00fffc, transparent);
+    transform: translateX(-100%);
+    transition: 0.6s;
+}
+
+.btn:hover::before {
+    transform: translateX(0);
+}
+
+.btn:hover {
+    background: transparent;
+    box-shadow: 0 0 20px 5px #00fffc;
+}
+
