@@ -281,6 +281,29 @@ Close everything properly
     </div>
   </footer>
   </div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const tags = document.querySelectorAll('.tag');
+  const tooltip = document.getElementById('tooltip');
 
+  tags.forEach(tag => {
+    tag.addEventListener('click', (e) => {
+      e.stopPropagation(); // prevent closing immediately
+      tooltip.innerText = tag.dataset.meaning; // show the meaning from data-meaning
+      tooltip.style.display = 'block';
+
+      // Position tooltip below the clicked tag
+      const rect = tag.getBoundingClientRect();
+      tooltip.style.top = window.scrollY + rect.bottom + 8 + 'px';
+      tooltip.style.left = window.scrollX + rect.left + 'px';
+    });
+  });
+
+  // Hide tooltip if click outside
+  document.addEventListener('click', () => {
+    tooltip.style.display = 'none';
+  });
+});
+</script>
 </body>
     </html>
