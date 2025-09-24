@@ -577,3 +577,68 @@ h2{
 }
 #whatsapp{
     color:#0afc0a;
+    /* Container */
+.html-cheatsheet {
+  background: #1e1e1e;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  font-family: Arial, sans-serif;
+  max-width: 900px;
+  margin: 20px auto;
+  position: relative;
+}
+
+.html-cheatsheet h2 {
+  color: #00fffc;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.html-cheatsheet h3 {
+  color: #ffae00;
+  margin-top: 15px;
+}
+
+.html-cheatsheet ul {
+  list-style-type: disc;
+  padding-left: 25px;
+}
+
+.html-cheatsheet li {
+  margin-bottom: 5px;
+}
+
+.tag {
+  color: #569cd6;
+  cursor: pointer;
+  border-bottom: 1px dashed #fff;
+}
+
+.tag:hover {
+  color: #00fffc;
+}
+
+.tooltip-text {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #ccc;
+}
+
+.tooltip {
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 5px;
+  display: none;
+  font-size: 14px;
+  z-index: 10000;
+  max-width: 250px;
+  pointer-events: none;
+}
+
+/* Optional spacing for last section */
+.html-cheatsheet ul:last-of-type {
+  margin-bottom: 20px;
+}
