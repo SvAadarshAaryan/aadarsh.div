@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>3D Audio Reactive Dots</title>
+<title>Clear Audio & Touch Reaction</title>
 <style>
 html, body {
     margin: 0;
@@ -14,166 +14,146 @@ html, body {
 canvas {
     display: block;
 }
-.hint {
+.info {
     position: fixed;
-    bottom: 10px;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
-    color: #aaa;
+    color: #fff;
     font-family: system-ui, sans-serif;
-    font-size: 12px;
-    opacity: 0.7;
+    font-size: 14px;
+    opacity: 0.8;
 }
 </style>
 </head>
 <body>
 
-<canvas id="canvas"></canvas>
-<div class="hint">Tap / Click to activate audio • Move mouse / finger</div>
+<canvas id="c"></canvas>
+<div class="info">Make sound 🎤 • Move finger / mouse 🖱️</div>
 
 <script>
-/* =========================
-   CANVAS SETUP
-========================= */
-const canvas = document.getElementById("canvas");
+/* =====================
+   CANVAS
+===================== */
+const canvas = document.getElementById("c");
 const ctx = canvas.getContext("2d");
 
 function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
 }
 resize();
-window.addEventListener("resize", resize);
+addEventListener("resize", resize);
 
-/* =========================
-   INPUT (MOUSE / TOUCH)
-========================= */
-let mx = window.innerWidth / 2;
-let my = window.innerHeight / 2;
+/* =====================
+   INPUT
+===================== */
+let mx = innerWidth / 2;
+let my = innerHeight / 2;
 
-window.addEventListener("mousemove", e => {
+addEventListener("mousemove", e => {
     mx = e.clientX;
     my = e.clientY;
 });
 
-window.addEventListener("touchmove", e => {
+addEventListener("touchmove", e => {
     mx = e.touches[0].clientX;
     my = e.touches[0].clientY;
 }, { passive: true });
 
-/* =========================
-   AUDIO (SAFE INIT)
-========================= */
-let audioCtx = null;
-let analyser = null;
-let data = null;
+/* =====================
+   AUDIO
+===================== */
+let audioCtx, analyser, data;
 
 async function initAudio() {
     if (audioCtx) return;
+
+    if (!navigator.mediaDevices) {
+        alert("Use HTTPS or localhost for audio");
+        return;
+    }
 
     audioCtx = new AudioContext();
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const source = audioCtx.createMediaStreamSource(stream);
 
     analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 512;
+    analyser.fftSize = 256;
     data = new Uint8Array(analyser.frequencyBinCount);
 
     source.connect(analyser);
 }
 
-window.addEventListener("click", initAudio);
-window.addEventListener("touchstart", initAudio);
+addEventListener("click", initAudio);
+addEventListener("touchstart", initAudio);
 
-/* =========================
-   COLOR (HSV → RGB)
-========================= */
-function hsv(h, s, v, a = 1) {
-    let f = (n, k = (n + h / 60) % 6) =>
-        v - v * s * Math.max(Math.min(k, 4 - k, 1), 0);
-    return `rgba(${f(5)*255},${f(3)*255},${f(1)*255},${a})`;
-}
+/* =====================
+   PARTICLES
+===================== */
+const particles = [];
+const COUNT = 1500;
 
-/* =========================
-   DOT SYSTEM (3D SPACE)
-========================= */
-const DOTS = 5000;
-const dots = [];
-
-for (let i = 0; i < DOTS; i++) {
-    dots.push({
-        x: (Math.random() - 0.5) * 2,
-        y: (Math.random() - 0.5) * 2,
-        z: Math.random() * 2,
+for (let i = 0; i < COUNT; i++) {
+    particles.push({
         angle: Math.random() * Math.PI * 2,
-        speed: 0.001 + Math.random() * 0.004,
-        size: 0.5 + Math.random() * 1.5
+        radius: Math.random(),
+        speed: 0.002 + Math.random() * 0.004
     });
 }
 
-/* =========================
-   ANIMATION LOOP
-========================= */
+/* =====================
+   ANIMATION
+===================== */
 let t = 0;
 
 function animate() {
     t += 0.01;
 
-    // Fading background
-    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    ctx.fillStyle = "rgba(0,0,0,0.25)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Audio energy
-    let audioEnergy = 0;
+    // AUDIO ENERGY (LOUD = BIG)
+    let energy = 0;
     if (analyser && data) {
         analyser.getByteFrequencyData(data);
         for (let i = 0; i < data.length; i++) {
-            audioEnergy += data[i];
+            energy += data[i];
         }
-        audioEnergy /= data.length * 255;
+        energy /= data.length * 255;
     }
 
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
+    const maxR = Math.min(cx, cy) * (1 + energy * 1.5);
 
-    for (let d of dots) {
-        d.angle += d.speed * (1 + audioEnergy * 3);
+    // === SHOCKWAVE FROM SOUND ===
+    ctx.beginPath();
+    ctx.strokeStyle = `rgba(255,80,120,${energy})`;
+    ctx.lineWidth = 3 + energy * 10;
+    ctx.arc(cx, cy, maxR * energy, 0, Math.PI * 2);
+    ctx.stroke();
 
-        // Rotate in 3D
-        const cos = Math.cos(t * 0.3);
-        const sin = Math.sin(t * 0.3);
+    // === PARTICLES ===
+    for (let p of particles) {
+        p.angle += p.speed * (1 + energy * 6);
 
-        const x3 = d.x * cos - d.z * sin;
-        const z3 = d.x * sin + d.z * cos;
+        const r = maxR * p.radius * (1 + energy);
+        let x = cx + Math.cos(p.angle) * r;
+        let y = cy + Math.sin(p.angle) * r;
 
-        // Perspective projection
-        const depth = 1 / (1 + z3 * 1.5);
-        const px = cx + x3 * depth * canvas.width * 0.4;
-        const py = cy + d.y * depth * canvas.height * 0.4;
-
-        // Mouse attraction
-        const dx = px - mx;
-        const dy = py - my;
+        // TOUCH GRAVITY (VERY CLEAR)
+        const dx = mx - x;
+        const dy = my - y;
         const dist = Math.sqrt(dx*dx + dy*dy) + 0.001;
-        const pull = Math.min(100 / dist, 2);
+        const force = Math.min(120 / dist, 5);
 
-        // Radius (SAFE)
-        const radius = Math.max(
-            0.1,
-            d.size * Math.abs(depth) * (1 + audioEnergy * 2)
-        );
-
-        const hue = (t * 80 + d.z * 180) % 360;
+        x += dx * force * 0.03;
+        y += dy * force * 0.03;
 
         ctx.beginPath();
-        ctx.fillStyle = hsv(hue, 0.9, 1, depth + audioEnergy);
-        ctx.arc(
-            px - dx * pull * 0.01,
-            py - dy * pull * 0.01,
-            radius,
-            0,
-            Math.PI * 2
-        );
+        ctx.fillStyle = `hsl(${(t*80 + r)%360},100%,60%)`;
+        ctx.arc(x, y, 2 + energy * 6, 0, Math.PI * 2);
         ctx.fill();
     }
 
