@@ -1,166 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Clear Audio & Touch Reaction</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Magic Social Share Menu</title>
+
+<!-- Ionicons for icons (works with <ion-icon>) -->
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
 <style>
-html, body {
-    margin: 0;
-    padding: 0;
-    background: #000;
-    overflow: hidden;
-    touch-action: none;
+/* 🌀 Basic Resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-canvas {
-    display: block;
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #252432;
+  font-family: Arial, sans-serif;
 }
-.info {
-    position: fixed;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #fff;
-    font-family: system-ui, sans-serif;
-    font-size: 14px;
-    opacity: 0.8;
+
+/* 📍 Menu Container */
+.menu {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+/* 🔘 Central Share Button */
+.menu .toggle {
+  position: relative;
+  height: 60px;
+  width: 60px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: transform 0.5s ease;
+  z-index: 5;
+}
+
+/* Rotate button when active */
+.menu.active .toggle {
+  transform: rotate(360deg);
+}
+
+/* 🔗 Each Social Icon */
+.menu li {
+  position: absolute;
+  left: 0;
+  list-style: none;
+  transition: 0.5s ease;
+  transform: rotate(calc(360deg / 8 * var(--i))) scale(0);
+  transform-origin: 140px;
+  transition-delay: calc(0.05s * var(--i));
+}
+
+/* Reveal icons when active */
+.menu.active li {
+  scale: 1;
+}
+
+.menu li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(calc(360deg / -8 * var(--i)));
+  width: 60px;
+  height: 60px;
+  background: #fff;
+  border-radius: 50%;
+  font-size: 1.75rem;
+  color: var(--clr);
+  text-decoration: none;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.15);
+  transition: 0.3s ease;
+}
+
+/* Hover effect */
+.menu li:hover a {
+  font-size: 2.2rem;
+  box-shadow: 0 0 0 2px var(--clr), 0 0 0 6px #fff;
+}
+
 </style>
+
 </head>
 <body>
 
-<canvas id="c"></canvas>
-<div class="info">Make sound 🎤 • Move finger / mouse 🖱️</div>
+<div class="menu">
+  <div class="toggle">
+    <ion-icon name="share-social-outline"></ion-icon>
+  </div>
+
+  <!-- Social icons (customize links & colors!) -->
+  <li style="--i:0; --clr:#1877f2;">
+    <a href="#"><ion-icon name="logo-facebook"></ion-icon></a>
+  </li>
+  <li style="--i:1; --clr:#25D366;">
+    <a href="#"><ion-icon name="logo-whatsapp"></ion-icon></a>
+  </li>
+  <li style="--i:2; --clr:#1DA1F2;">
+    <a href="#"><ion-icon name="logo-twitter"></ion-icon></a>
+  </li>
+  <li style="--i:3; --clr:#E4405F;">
+    <a href="#"><ion-icon name="logo-instagram"></ion-icon></a>
+  </li>
+  <li style="--i:4; --clr:#0A66C2;">
+    <a href="#"><ion-icon name="logo-linkedin"></ion-icon></a>
+  </li>
+  <li style="--i:5; --clr:#C32AA3;">
+    <a href="#"><ion-icon name="logo-tiktok"></ion-icon></a>
+  </li>
+  <li style="--i:6; --clr:#FF0000;">
+    <a href="#"><ion-icon name="logo-youtube"></ion-icon></a>
+  </li>
+  <li style="--i:7; --clr:#000000;">
+    <a href="#"><ion-icon name="logo-github"></ion-icon></a>
+  </li>
+</div>
 
 <script>
-/* =====================
-   CANVAS
-===================== */
-const canvas = document.getElementById("c");
-const ctx = canvas.getContext("2d");
+// ☝️ Toggle active class to expand menu
+const menu = document.querySelector(".menu");
+const toggle = document.querySelector(".toggle");
 
-function resize() {
-    canvas.width = innerWidth;
-    canvas.height = innerHeight;
-}
-resize();
-addEventListener("resize", resize);
-
-/* =====================
-   INPUT
-===================== */
-let mx = innerWidth / 2;
-let my = innerHeight / 2;
-
-addEventListener("mousemove", e => {
-    mx = e.clientX;
-    my = e.clientY;
+toggle.addEventListener("click", () => {
+  menu.classList.toggle("active");
 });
-
-addEventListener("touchmove", e => {
-    mx = e.touches[0].clientX;
-    my = e.touches[0].clientY;
-}, { passive: true });
-
-/* =====================
-   AUDIO
-===================== */
-let audioCtx, analyser, data;
-
-async function initAudio() {
-    if (audioCtx) return;
-
-    if (!navigator.mediaDevices) {
-        alert("Use HTTPS or localhost for audio");
-        return;
-    }
-
-    audioCtx = new AudioContext();
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const source = audioCtx.createMediaStreamSource(stream);
-
-    analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 256;
-    data = new Uint8Array(analyser.frequencyBinCount);
-
-    source.connect(analyser);
-}
-
-addEventListener("click", initAudio);
-addEventListener("touchstart", initAudio);
-
-/* =====================
-   PARTICLES
-===================== */
-const particles = [];
-const COUNT = 1500;
-
-for (let i = 0; i < COUNT; i++) {
-    particles.push({
-        angle: Math.random() * Math.PI * 2,
-        radius: Math.random(),
-        speed: 0.002 + Math.random() * 0.004
-    });
-}
-
-/* =====================
-   ANIMATION
-===================== */
-let t = 0;
-
-function animate() {
-    t += 0.01;
-
-    ctx.fillStyle = "rgba(0,0,0,0.25)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // AUDIO ENERGY (LOUD = BIG)
-    let energy = 0;
-    if (analyser && data) {
-        analyser.getByteFrequencyData(data);
-        for (let i = 0; i < data.length; i++) {
-            energy += data[i];
-        }
-        energy /= data.length * 255;
-    }
-
-    const cx = canvas.width / 2;
-    const cy = canvas.height / 2;
-    const maxR = Math.min(cx, cy) * (1 + energy * 1.5);
-
-    // === SHOCKWAVE FROM SOUND ===
-    ctx.beginPath();
-    ctx.strokeStyle = `rgba(255,80,120,${energy})`;
-    ctx.lineWidth = 3 + energy * 10;
-    ctx.arc(cx, cy, maxR * energy, 0, Math.PI * 2);
-    ctx.stroke();
-
-    // === PARTICLES ===
-    for (let p of particles) {
-        p.angle += p.speed * (1 + energy * 6);
-
-        const r = maxR * p.radius * (1 + energy);
-        let x = cx + Math.cos(p.angle) * r;
-        let y = cy + Math.sin(p.angle) * r;
-
-        // TOUCH GRAVITY (VERY CLEAR)
-        const dx = mx - x;
-        const dy = my - y;
-        const dist = Math.sqrt(dx*dx + dy*dy) + 0.001;
-        const force = Math.min(120 / dist, 5);
-
-        x += dx * force * 0.03;
-        y += dy * force * 0.03;
-
-        ctx.beginPath();
-        ctx.fillStyle = `hsl(${(t*80 + r)%360},100%,60%)`;
-        ctx.arc(x, y, 2 + energy * 6, 0, Math.PI * 2);
-        ctx.fill();
-    }
-
-    requestAnimationFrame(animate);
-}
-
-animate();
 </script>
 
 </body>
